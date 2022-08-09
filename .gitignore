@@ -151,6 +151,8 @@ context/
 #yamls
 hosts*.yml
 vars*.yml
+hosts.yml
+vars.yml
 
 #upgrade version file if present
 VERSION
