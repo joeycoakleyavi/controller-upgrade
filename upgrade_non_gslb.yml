@@ -1,15 +1,15 @@
 ---
 - hosts: all
   gather_facts: no
-  roles:
-    - role: "avinetworks.avisdk"
   connection: local
   vars_files: ./vars.yml
+  collections:
+    - vmware.alb
 
   tasks:
   # Check whether this is a GSLB-enabled Cluster
     - name: Check GSLB Enabled
-      avi_api_session:
+      vmware.alb.avi_api_session:
         avi_credentials: "{{ avi_credentials }}"
         http_method: get
         timeout: 3000
@@ -38,7 +38,7 @@
 
   # Search image list for our current upgrade
     - name: get image list
-      avi_api_session:
+      vmware.alb.avi_api_session:
         avi_credentials: "{{ avi_credentials }}"       
         http_method: get
         timeout: 3000
@@ -59,25 +59,25 @@
         name: upload_image
       when: image_name | length == 0
 
-# Calling patch_upgrade role if this is a patch operation
-- name: Calling patch_upgrade role
-  include_role:
-    name: patch_upgrade
-  when: image_type[0] == "IMAGE_TYPE_PATCH"
+    # Calling patch_upgrade role if this is a patch operation
+    - name: Calling patch_upgrade role
+      include_role:
+        name: patch_upgrade
+      when: image_type[0] == "IMAGE_TYPE_PATCH"
 
-- name: Calling system_upgrade role
-  include_role:
-    name: system_upgrade
-  when: image_type[0] == "IMAGE_TYPE_SYSTEM"
+    - name: Calling system_upgrade role
+      include_role:
+        name: system_upgrade
+      when: image_type[0] == "IMAGE_TYPE_SYSTEM"
 
-- name: Monitor Upgrade
-  avi_api_session:
-    avi_credentials: "{{ avi_credentials }}"
-    api_version: "{{ avi_credentials.api_version }}"
-    http_method: get
-    timeout: 300
-    path: "upgradestatusinfo"
-  register: upgrade_status
-  until: "{{upgrade_status | upgrade_result() }}"
-  delay: 30
-  retries: 80
+    - name: Monitor Upgrade
+      vmware.alb.avi_api_session:
+        avi_credentials: "{{ avi_credentials }}"
+        api_version: "{{ avi_credentials.api_version }}"
+        http_method: get
+        timeout: 300
+        path: "upgradestatusinfo"
+      register: upgrade_status
+      until: "{{upgrade_status | upgrade_result() }}"
+      delay: 30
+      retries: 80

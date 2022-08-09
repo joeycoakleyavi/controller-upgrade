@@ -1,12 +1,12 @@
 ---
 - hosts: all
   gather_facts: no
-  roles:
-    - role: "avinetworks.avisdk"
   connection: local
   vars_files: vars.yml
   any_errors_fatal: true
   serial: 1
+  collections:
+    - vmware.alb
 
   tasks:
     # Calling patch_upgrade role if this is a patch operation
@@ -27,7 +27,7 @@
         - "{{ cluster_version.obj.0.version | compare_versions(zip_image_version) == false }}"
 
     - name: Monitor Upgrade - FOLLOWERS
-      avi_api_session:
+      vmware.alb.avi_api_session:
         avi_credentials: "{{ avi_credentials }}"
         api_version: "{{ avi_credentials.api_version }}"
         http_method: get

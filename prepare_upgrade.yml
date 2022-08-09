@@ -1,16 +1,16 @@
 ---
 - hosts: all
   gather_facts: no
-  roles:
-    - role: "avinetworks.avisdk"
   connection: local
   vars_files: vars.yml
   any_errors_fatal: true
+  collections:
+    - vmware.alb
 
   tasks:
   # Check whether this is a GSLB-enabled Cluster
     - name: Check GSLB Enabled
-      avi_api_session:
+      vmware.alb.avi_api_session:
         avi_credentials: "{{ avi_credentials }}"
         http_method: get
         timeout: 3000
@@ -43,7 +43,7 @@
 
   # Search image list for our current upgrade
     - name: get image list
-      avi_api_session:
+      vmware.alb.avi_api_session:
         avi_credentials: "{{ avi_credentials }}"       
         http_method: get
         timeout: 3000
@@ -72,7 +72,7 @@
         - prepare
 
     - name: Get our current version
-      avi_api_session:
+      vmware.alb.avi_api_session:
         avi_credentials: "{{ avi_credentials }}"       
         http_method: get
         timeout: 3000
@@ -82,7 +82,7 @@
         - prepare
 
     - name: get cluster info
-      avi_api_session:
+      vmware.alb.avi_api_session:
         avi_credentials: "{{ avi_credentials }}"       
         http_method: get
         timeout: 3000
@@ -98,7 +98,7 @@
 
   # Configure GSLB maintenance mode. This only runs on the GSLB Leader
     - name: Enable GSLB maintenance mode
-      avi_api_session:
+      vmware.alb.avi_api_session:
         avi_credentials: "{{ avi_credentials }}"       
         http_method: post
         timeout: 3000

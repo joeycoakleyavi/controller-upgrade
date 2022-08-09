@@ -3,13 +3,13 @@
   block:
 # upload
   - name: upload image using api
-    avi_api_image:
+    vmware.alb.avi_api_image:
       avi_credentials: "{{ avi_credentials }}"
       file_path: "{{ upgrade_file_location }}"
       api_version: "{{ avi_credentials.api_version }}"
 # get new image list
   - name: get updated image list
-    avi_api_session:
+    vmware.alb.avi_api_session:
       avi_credentials: "{{ avi_credentials }}"       
       http_method: get
       timeout: 3000
