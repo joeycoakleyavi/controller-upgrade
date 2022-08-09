@@ -12,7 +12,7 @@ cd controller-upgrade
 python3 -m venv env
 source env/bin/activate
 pip3 install -r requirements.txt
-ansible-galaxy install avinetworks.avisdk
+ansible-galaxy collection install vmware.alb
 
 Edit hosts.yml to include which controllers should be upgraded. The playbook currently points to **ALL** hosts in this file. Scope this down if required.
 

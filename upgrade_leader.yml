@@ -1,11 +1,11 @@
 ---
 - hosts: all
   gather_facts: no
-  roles:
-    - role: "avinetworks.avisdk"
   connection: local
   vars_files: ./vars.yml
   any_errors_fatal: true
+  collections:
+    - vmware.alb
 
   tasks:
     - name: Calling patch_upgrade role - LEADER
@@ -25,7 +25,7 @@
         - "{{ cluster_version.obj.0.version | compare_versions(zip_image_version) == false }}"
 
     - name: Monitor Upgrade - LEADER
-      avi_api_session:
+      vmware.alb.avi_api_session:
         avi_credentials: "{{ avi_credentials }}"
         api_version: "{{ avi_credentials.api_version }}"
         http_method: get
@@ -40,7 +40,7 @@
         - "{{ cluster_version.obj.0.version | compare_versions(zip_image_version) == false }}"
 
     - name: disable_gslb_maintenance_mode
-      avi_api_session:
+      vmvware.alb.avi_api_session:
         avi_credentials: "{{ avi_credentials }}"
         api_version: "{{ avi_credentials.api_version }}"
         http_method: post
