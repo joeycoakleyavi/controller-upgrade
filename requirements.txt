@@ -1,7 +1,7 @@
-ansible==3.0.0
-ansible-base==2.10.6
+ansible>=4.0.0
+ansible-base>=2.11
 astroid==2.5
-avisdk==20.1.4
+avisdk>=20.1.4
 certifi==2020.12.5
 cffi==1.14.5
 chardet==4.0.0
