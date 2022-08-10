@@ -59,6 +59,21 @@
         name: upload_image
       when: image_name | length == 0
 
+    - name: Get our current version
+      vmware.alb.avi_api_session:
+        avi_credentials: "{{ avi_credentials }}"       
+        http_method: get
+        timeout: 3000
+        path: version/controller
+      register: cluster_version
+
+    - name: end play if already upgraded
+      block:
+        - debug:
+            msg: "This controller is at the same version as the upgrade file"
+        - meta: end_play
+      when: cluster_version['obj'][0]['version'].split('(')[0] == zip_image_version.split('-')[0]
+
     # Calling patch_upgrade role if this is a patch operation
     - name: Calling patch_upgrade role
       include_role:

@@ -40,7 +40,7 @@
         - "{{ cluster_version.obj.0.version | compare_versions(zip_image_version) == false }}"
 
     - name: disable_gslb_maintenance_mode
-      vmvware.alb.avi_api_session:
+      vmware.alb.avi_api_session:
         avi_credentials: "{{ avi_credentials }}"
         api_version: "{{ avi_credentials.api_version }}"
         http_method: post
