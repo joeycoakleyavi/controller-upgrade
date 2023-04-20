@@ -72,7 +72,7 @@
         - debug:
             msg: "This controller is at the same version as the upgrade file"
         - meta: end_play
-      when: cluster_version['obj'][0]['version'].split('(')[0] == zip_image_version.split('-')[0]
+      when: cluster_version['obj'][0]['version'].split('(')[0] == zip_image_version.split('-')[0] and image_type[0] != "IMAGE_TYPE_PATCH"
 
     # Calling patch_upgrade role if this is a patch operation
     - name: Calling patch_upgrade role
@@ -95,4 +95,4 @@
       register: upgrade_status
       until: "{{upgrade_status | upgrade_result() }}"
       delay: 30
-      retries: 80
+      retries: 100
