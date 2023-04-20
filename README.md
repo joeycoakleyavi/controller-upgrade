@@ -14,7 +14,7 @@ source env/bin/activate
 pip3 install -r requirements.txt
 ansible-galaxy collection install vmware.alb
 
-Edit hosts.yml to include which controllers should be upgraded. The playbook currently points to **ALL** hosts in this file. Scope this down if required.
+Edit hosts.ini to include which controllers should be upgraded. The playbook currently points to **ALL** hosts in this file. Scope this down if required.
 
 Note: Only include the leader node of a given cluster in hosts.yml. Avi Controllers will handle distributing the image and performing upgrades to all member controllers of the cluster.
 
@@ -23,4 +23,10 @@ ansible-playbook upgrade_non_gslb.yml
 
 For GSLB-Enabled Clusters:
 ansible-playbook upgrade_gslb.yml
+
+##optional variables
+disruptive_upgrade: default is false
+suspend_on_failure: default is true
+action_on_error: default is SUSPEND_UPGRADE_OPS_ON_ERROR (This is for SE upgrades, possible options: ROLLBACK_UPGRADE_OPS_ON_ERROR, SUSPEND_UPGRADE_OPS_ON_ERROR, CONTINUE_UPGRADE_OPS_ON_ERROR) 
+
 ```

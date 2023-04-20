@@ -156,3 +156,6 @@ vars.yml
 
 #upgrade version file if present
 VERSION
+
+#ini inventory files
+*.ini

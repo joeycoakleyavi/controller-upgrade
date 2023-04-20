@@ -1,0 +1,3 @@
+[all]
+ctl3 ansible_host=192.168.0.183
+ctl5 ansible_host=192.168.0.185 
