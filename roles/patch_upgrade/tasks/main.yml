@@ -19,5 +19,9 @@
       # image_uuid: "{{ base_image_uuid.0 }}"
       system: true
       skip_warnings: true
+      disruptive: "{{ disruptive_upgrade | default('false') }}"
+      suspend_on_failure: "{{ suspend_on_failure | default('true') }}"
+      se_group_options:
+        action_on_error: "{{ action_on_error | default('SUSPEND_UPGRADE_OPS_ON_ERROR') }}"
       controller_patch_uuid: "{{ image_uuid.0 }}"
       se_patch_uuid: "{{ image_uuid.0 }}"
