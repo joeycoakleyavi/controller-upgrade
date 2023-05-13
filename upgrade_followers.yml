@@ -36,7 +36,7 @@
       register: upgrade_status
       until: "{{ upgrade_status | upgrade_result() }}"
       delay: 30
-      retries: 80
+      retries: 200
       when: 
         - cluster_uuid != gslb.obj.results.0.leader_cluster_uuid
         - "{{ cluster_version.obj.0.version | compare_versions(zip_image_version) == false }}"
