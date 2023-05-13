@@ -13,7 +13,6 @@
     - name: Calling patch_upgrade role - FOLLOWERS
       import_role:
         name: patch_upgrade
-      register: patch_in_progress
       when: 
         - image_type[0] == "IMAGE_TYPE_PATCH"
         - cluster_uuid != gslb.obj.results.0.leader_cluster_uuid
@@ -23,7 +22,6 @@
     - name: Calling system_upgrade role - FOLLOWERS
       import_role:
         name: system_upgrade
-      register: upgrade_in_progress
       when: 
         - image_type[0] == "IMAGE_TYPE_SYSTEM"
         - cluster_uuid != gslb.obj.results.0.leader_cluster_uuid

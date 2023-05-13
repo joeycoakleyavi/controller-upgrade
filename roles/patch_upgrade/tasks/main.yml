@@ -25,3 +25,4 @@
         action_on_error: "{{ action_on_error | default('SUSPEND_UPGRADE_OPS_ON_ERROR') }}"
       controller_patch_uuid: "{{ image_uuid.0 }}"
       se_patch_uuid: "{{ image_uuid.0 }}"
+  register: patch_in_progress

@@ -11,7 +11,6 @@
     - name: Calling patch_upgrade role - LEADER
       include_role:
         name: patch_upgrade
-      register: leader_patch_in_progress
       when:
         - image_type[0] == "IMAGE_TYPE_PATCH"
         - cluster_uuid == gslb.obj.results.0.leader_cluster_uuid
@@ -21,7 +20,6 @@
     - name: Calling system_upgrade role - LEADER
       include_role:
         name: system_upgrade
-      register: leader_upgrade_in_progress
       when:
         - image_type[0] == "IMAGE_TYPE_SYSTEM"
         - cluster_uuid == gslb.obj.results.0.leader_cluster_uuid
@@ -40,7 +38,7 @@
       retries: 200
       when: 
         - cluster_uuid == gslb.obj.results.0.leader_cluster_uuid
-        - leader_patch_in_progress is defined and leader_patch_in_progress.changed or leader_upgrade_in_progress is defined and leader_upgrade_in_progress.changed
+        - patch_in_progress is defined and patch_in_progress.changed or upgrade_in_progress is defined and upgrade_in_progress.changed
         #- "{{ cluster_version.obj.0.version | compare_versions(zip_image_version) == false }}"
 
     - name: disable_gslb_maintenance_mode

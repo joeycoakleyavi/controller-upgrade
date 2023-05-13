@@ -14,3 +14,4 @@
       suspend_on_failure: "{{ suspend_on_failure | default('true') }}"
       se_group_options:
         action_on_error: "{{ action_on_error | default('SUSPEND_UPGRADE_OPS_ON_ERROR') }}"
+  register: upgrade_in_progress
