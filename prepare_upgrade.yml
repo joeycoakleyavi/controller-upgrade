@@ -41,18 +41,21 @@
       tags:
         - prepare
 
+    #- debug: var=zip_image_version
+
     - name: check for patch version
       stat:
         path: ./PATCH_VERSION
       register: register_patch
 
+    # set patch version fact if file is patch
     - set_fact:
-        patch_image_version: "{{ lookup('csvfile', 'Tag file=./PATCH_VERSION delimiter=:') | trim}}"
+        patch_image_version: "{{ lookup('csvfile', 'patch file=./PATCH_VERSION delimiter=:') | trim}}"
       tags:
         - prepare
       when: register_patch.stat.exists
 
-    - debug: var=patch_image_version
+    #- debug: var=patch_image_version
 
   # Search image list for our current upgrade
     - name: get image list
@@ -115,6 +118,7 @@
             msg: "This controller is at the same version as the upgrade file"
         - meta: end_play
       when: cluster_version['obj'][0]['version'].split('(')[0] == zip_image_version.split('-')[0] and image_type[0] != "IMAGE_TYPE_PATCH"
+
 
   # Configure GSLB maintenance mode. This only runs on the GSLB Leader
     - name: Enable GSLB maintenance mode

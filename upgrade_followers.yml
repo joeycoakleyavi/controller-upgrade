@@ -9,6 +9,8 @@
     - vmware.alb
 
   tasks:
+    - debug: var=serial_count
+
     # Calling patch_upgrade role if this is a patch operation
     - name: Calling patch_upgrade role - FOLLOWERS
       import_role:
@@ -17,6 +19,7 @@
         - image_type[0] == "IMAGE_TYPE_PATCH"
         - cluster_uuid != gslb.obj.results.0.leader_cluster_uuid
         - "{{ cluster_version.obj.0.version | compare_versions(zip_image_version) == false }}"
+        - "{{ cluster_version.obj.0.patch | compare_versions(patch_image_version) == false }}"
 
     - name: Calling system_upgrade role - FOLLOWERS
       import_role:
