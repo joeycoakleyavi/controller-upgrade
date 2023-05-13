@@ -29,7 +29,7 @@
         extra_opts:
         - --strip=1
         - --wildcards
-        - 'bootstrap/VERSION'
+        - 'bootstrap/*VERSION'
       register: unzip_results
       run_once: True
       tags: 
@@ -40,6 +40,19 @@
         zip_image_version: "{{ lookup('csvfile', 'Tag file=./VERSION delimiter=:') | trim}}"
       tags:
         - prepare
+
+    - name: check for patch version
+      stat:
+        path: ./PATCH_VERSION
+      register: register_patch
+
+    - set_fact:
+        patch_image_version: "{{ lookup('csvfile', 'Tag file=./PATCH_VERSION delimiter=:') | trim}}"
+      tags:
+        - prepare
+      when: register_patch.stat.exists
+
+    - debug: var=patch_image_version
 
   # Search image list for our current upgrade
     - name: get image list
