@@ -17,8 +17,8 @@
       when: 
         - image_type[0] == "IMAGE_TYPE_PATCH"
         - cluster_uuid != gslb.obj.results.0.leader_cluster_uuid
-        - "{{ cluster_version.obj.0.version | compare_versions(zip_image_version) == false }}"
-        - "{{ cluster_version.obj.0.patch != patch_image_version }}"
+        - cluster_version.obj.0.version | compare_versions(zip_image_version) == false
+        - cluster_version.obj.0.patch != patch_image_version
 
     - name: Calling system_upgrade role - FOLLOWERS
       import_role:
@@ -27,7 +27,7 @@
       when: 
         - image_type[0] == "IMAGE_TYPE_SYSTEM"
         - cluster_uuid != gslb.obj.results.0.leader_cluster_uuid
-        - "{{ cluster_version.obj.0.version | compare_versions(zip_image_version) == false }}"
+        - cluster_version.obj.0.version | compare_versions(zip_image_version) == false
 
     - name: Monitor Upgrade - FOLLOWERS
       vmware.alb.avi_api_session:
@@ -42,5 +42,5 @@
       retries: 200
       when: 
         - cluster_uuid != gslb.obj.results.0.leader_cluster_uuid
-        - patch_in_progress.changed or upgrade_in_progress.changed
+        - patch_in_progress is defined and patch_in_progress.changed or upgrade_in_progress is defined and upgrade_in_progress.changed
         #- "{{ cluster_version.obj.0.version | compare_versions(zip_image_version) == false }}"

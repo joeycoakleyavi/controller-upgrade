@@ -40,7 +40,7 @@
       retries: 200
       when: 
         - cluster_uuid == gslb.obj.results.0.leader_cluster_uuid
-        - leader_patch_in_progress.changed or leader_upgrade_in_progress.changed
+        - leader_patch_in_progress is defined and leader_patch_in_progress.changed or leader_upgrade_in_progress is defined and leader_upgrade_in_progress.changed
         #- "{{ cluster_version.obj.0.version | compare_versions(zip_image_version) == false }}"
 
     - name: disable_gslb_maintenance_mode
